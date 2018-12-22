@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+  wordpress:
+    image: wordpress
+    restart: always
+    hostname: www.lesgroschats.com
+    container_name: wedding_wordpress
+    environment:
+     - "WORDPRESS_DB_HOST=mysql"
+     - "WORDPRESS_DB_PASSWORD=wdp"
+     - "WORDPRESS_DB_USER=root"
+     - "WORDPRESS_DB_NAME=wordpress"
+    volumes:
+      - "./src:/var/www/html"
+    links:
+     - mysql
+    networks:
+      wordpress:
+      server:
+        aliases:
+        - www.lesgroschats.com
+        - lesgroschats.com
+  mysql:
+    image: mysql:5.7
+    restart: always
+    container_name: wedding_db
+    environment:
+     - "MYSQL_ROOT_PASSWORD=wdp"
+    networks:
+      wordpress:
+
+networks:
+  wordpress:
+  server:
+    external:
+      name: server
